@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Maquina simple-load.maq" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="machine.Maquina" />
+    <module name="Arboles" />
+    <option name="PROGRAM_PARAMETERS" value="maq/simple-load.maq" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="common.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
