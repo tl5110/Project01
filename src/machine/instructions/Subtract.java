@@ -26,8 +26,7 @@ public class Subtract implements Instruction{
      */
     @Override
     public void execute() {
-        // TODO
-        stack.push(stack.pop() - stack.pop());
+        stack.push(-stack.pop() + stack.pop()); // ???
     }
 
     /**
