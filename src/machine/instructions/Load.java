@@ -1,5 +1,6 @@
 package machine.instructions;
 
+import common.SymbolTable;
 import machine.InstructionStack;
 import machine.Maquina;
 
@@ -13,6 +14,7 @@ public class Load implements Instruction {
     private final String name;
     /** the instruction stack */
     private final InstructionStack stack;
+    private final SymbolTable symbolTable;
 
     /**
      * Creates a new instruction
@@ -22,6 +24,7 @@ public class Load implements Instruction {
     public Load(String name, Maquina machine) {
         this.name = name;
         this.stack = machine.getInstructionStack();
+        this.symbolTable = machine.getSymbolTable();
     }
 
     /**
@@ -30,7 +33,7 @@ public class Load implements Instruction {
      */
     @Override
     public void execute(){
-        // TODO
+        stack.push(symbolTable.get(name));
     }
 
     /**
