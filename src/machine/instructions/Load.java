@@ -14,6 +14,7 @@ public class Load implements Instruction {
     private final String name;
     /** the instruction stack */
     private final InstructionStack stack;
+    /** the symbol table */
     private final SymbolTable symbolTable;
 
     /**

@@ -35,7 +35,6 @@ public class Negate implements Instruction {
      */
     @Override
     public String toString(){
-        // TODO
-        return Maquina.NEGATE + " " + this.stack;
+        return Maquina.NEGATE;
     }
 }
