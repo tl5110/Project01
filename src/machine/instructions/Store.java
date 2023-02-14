@@ -4,33 +4,34 @@ import machine.InstructionStack;
 import machine.Maquina;
 
 /**
- * The PUSH instruction.
+ * The STORE instruction
  *
- * @author RIT CS
  * @author Tiffany Lee
  */
-public class Push implements Instruction {
-    /** the value to push */
-    private final int value;
+public class Store implements Instruction{
+    /** the variable name */
+    private final String name;
     /** the instruction stack */
     private final InstructionStack stack;
 
     /**
-     * Create a new instruction.
-     * @param value value to push
+     * Creates a new instruction
+     * @param name the variable name
      * @param machine the machine
      */
-    public Push(int value, Maquina machine) {
-        this.value = value;
+    public Store(String name, Maquina machine) {
+        this.name = name;
         this.stack = machine.getInstructionStack();
     }
 
     /**
-     * Pushes the saved value onto the instruction stack.
+     * Pops the value off the top of stack and sets the variable's value
+     * in the symbol table to the value.
      */
     @Override
-    public void execute() {
-        this.stack.push(this.value);
+    public void execute(){
+        // TODO
+        stack.pop();
     }
 
     /**
@@ -39,7 +40,7 @@ public class Push implements Instruction {
      * @return a short string describing what this instruction will do
      */
     @Override
-    public String toString() {
-        return Maquina.PUSH + " " + this.value;
+    public String toString(){
+        return Maquina.STORE + " " + this.name;
     }
 }
