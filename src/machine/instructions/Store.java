@@ -1,5 +1,6 @@
 package machine.instructions;
 
+import common.SymbolTable;
 import machine.InstructionStack;
 import machine.Maquina;
 
@@ -13,6 +14,8 @@ public class Store implements Instruction{
     private final String name;
     /** the instruction stack */
     private final InstructionStack stack;
+    /** the symbol table */
+    private final SymbolTable symbolTable;
 
     /**
      * Creates a new instruction
@@ -22,6 +25,7 @@ public class Store implements Instruction{
     public Store(String name, Maquina machine) {
         this.name = name;
         this.stack = machine.getInstructionStack();
+        this.symbolTable = machine.getSymbolTable();
     }
 
     /**
@@ -30,8 +34,7 @@ public class Store implements Instruction{
      */
     @Override
     public void execute(){
-        // TODO
-        stack.pop();
+        symbolTable.set(name, stack.pop());
     }
 
     /**
