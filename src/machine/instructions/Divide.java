@@ -26,10 +26,9 @@ public class Divide implements Instruction{
      */
     @Override
     public void execute() {
-        // ???
-        int p1 = stack.pop();
         int p2 = stack.pop();
-        stack.push(p2/p1);
+        int p1 = stack.pop();
+        stack.push(p1/p2);
     }
 
     /**
