@@ -59,7 +59,7 @@ public class Maquina {
     /** the terminating character when reading machine instructions from user (not file) */
     private final static String EOF = ".";
 
-    private final SymbolTable symbolTable;
+    private final SymbolTable symbolTable; // Stores values to variables (i.g. x = 10)
     private final InstructionStack instructionStack;
     private final List<Instruction> instructionsList;
 
@@ -106,47 +106,36 @@ public class Maquina {
             String[] instruction = maqIn.nextLine().strip().split("\\s+");
             switch (instruction[0]) {
                 case PUSH -> {
-                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
                     Push push = new Push(Integer.parseInt(instruction[1]), this);
                     instructionsList.add(push);
                 } case PRINT -> {
-                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
                     Print print = new Print(this);
                     instructionsList.add(print);
                 } case STORE -> {
-                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
                     Store store = new Store(instruction[1], this);
                     instructionsList.add(store);
                 } case LOAD -> {
-                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
                     Load load = new Load(instruction[1], this);
                     instructionsList.add(load);
                 } case NEGATE -> {
-                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
                     Negate neg = new Negate(this);
                     instructionsList.add(neg);
                 } case SQUARE_ROOT -> {
-                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
                     SquareRoot sqr = new SquareRoot(this);
                     instructionsList.add(sqr);
                 } case ADD -> {
-                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
                     Add add = new Add(this);
                     instructionsList.add(add);
                 } case SUBTRACT -> {
-                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
                     Subtract sub = new Subtract(this);
                     instructionsList.add(sub);
                 } case MULTIPLY -> {
-                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
                     Multiply mul = new Multiply(this);
                     instructionsList.add(mul);
                 } case DIVIDE -> {
-                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
                     Divide div = new Divide(this);
                     instructionsList.add(div);
                 } case MODULUS -> {
-                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
                     Modulus mod = new Modulus(this);
                     instructionsList.add(mod);
                 }
@@ -163,47 +152,13 @@ public class Maquina {
      */
     public void execute() {
         System.out.println("(MAQ) Executing...");
-
-//        for(Instruction instruction : instructionsList){
-//            switch (instruction) {
-//                case PUSH:
-//                    Push(instruction, );
-//                    break;
-//                case PRINT:
-//
-//                    break;
-//                case STORE:
-//
-//                    break;
-//                case LOAD:
-//
-//                    break;
-//                case NEGATE:
-//
-//                    break;
-//                case SQUARE_ROOT:
-//
-//                    break;
-//                case ADD:
-//
-//                    break;
-//                case SUBTRACT:
-//
-//                    break;
-//                case MULTIPLY:
-//
-//                    break;
-//                case DIVIDE:
-//
-//                    break;
-//                case MODULUS:
-//
-//                    break;
-//            }
-//        }
+        instructionsList.forEach(Instruction::execute);
 
         System.out.println("(MAQ) Completed execution!");
         System.out.println("(MAQ) Symbol table:");
+        System.out.println(symbolTable.toString() + instructionStack);
+//        System.out.println("(MAQ) Instruction stack:");
+//        System.out.println(instructionStack);
 
         // TODO
     }
