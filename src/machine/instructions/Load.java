@@ -1,5 +1,6 @@
 package machine.instructions;
 
+import common.Errors;
 import common.SymbolTable;
 import machine.InstructionStack;
 import machine.Maquina;
@@ -34,6 +35,9 @@ public class Load implements Instruction {
      */
     @Override
     public void execute(){
+        if(!symbolTable.has(name)){
+            Errors.report(Errors.Type.UNINITIALIZED, name);
+        }
         stack.push(symbolTable.get(name));
     }
 

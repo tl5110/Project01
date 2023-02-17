@@ -2,6 +2,7 @@ package machine.instructions;
 
 import machine.InstructionStack;
 import machine.Maquina;
+import common.Errors;
 
 /**
  * The DIVIDE instruction
@@ -28,6 +29,9 @@ public class Divide implements Instruction{
     public void execute() {
         int p2 = stack.pop();
         int p1 = stack.pop();
+        if(p2 == 0){
+            Errors.report(Errors.Type.DIVIDE_BY_ZERO);
+        }
         stack.push(p1/p2);
     }
 

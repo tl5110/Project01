@@ -1,5 +1,6 @@
 package machine.instructions;
 
+import common.Errors;
 import machine.InstructionStack;
 import machine.Maquina;
 import java.lang.Math;
@@ -27,8 +28,11 @@ public class SquareRoot implements Instruction{
      */
     @Override
     public void execute() {
-        // TODO
-        stack.push((int) Math.sqrt(stack.pop()));
+        int p = stack.pop();
+        if(p < 0){
+            Errors.report(Errors.Type.NEGATIVE_SQUARE_ROOT);
+        }
+        stack.push((int) Math.sqrt(p));
     }
 
     /**
