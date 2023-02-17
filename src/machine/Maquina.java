@@ -6,9 +6,7 @@ import machine.instructions.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*; //ADDED for Arrays.toString() in assemble
 
 
 /**
@@ -16,7 +14,7 @@ import java.util.Scanner;
  * an instruction stack and symbol table.
  *
  * @author RIT CS
- * @author YOUR NAME HERE
+ * @author Tiffany Lee
  */
 public class Maquina {
     /** the push instruction */
@@ -61,14 +59,18 @@ public class Maquina {
     /** the terminating character when reading machine instructions from user (not file) */
     private final static String EOF = ".";
 
-    // TODO
+    private final SymbolTable symbolTable;
+    private final InstructionStack instructionStack;
+    private final List<Instruction> instructionsList;
 
     /**
      * Create a new machine, with an empty symbol table, instruction stack, and
      * list of instructions.
      */
     public Maquina() {
-        // TODO
+        this.symbolTable = new SymbolTable();
+        this.instructionStack = new InstructionStack();
+        this.instructionsList = new ArrayList<>();
     }
 
     /**
@@ -77,8 +79,7 @@ public class Maquina {
      * @return the stack
      */
     public InstructionStack getInstructionStack() {
-        // TODO
-        return null;
+        return instructionStack;
     }
 
     /**
@@ -87,8 +88,7 @@ public class Maquina {
      * @return the symbol table
      */
     public SymbolTable getSymbolTable() {
-        // TODO
-        return null;
+        return symbolTable;
     }
 
 
@@ -102,11 +102,58 @@ public class Maquina {
         if (stdin) {
             System.out.print("🤖 ");
         }
-
-        // TODO
-
+        while (maqIn.hasNext()) {
+            String[] instruction = maqIn.nextLine().strip().split("\\s+");
+            switch (instruction[0]) {
+                case PUSH -> {
+                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
+                    Push push = new Push(Integer.parseInt(instruction[1]), this);
+                    instructionsList.add(push);
+                } case PRINT -> {
+                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
+                    Print print = new Print(this);
+                    instructionsList.add(print);
+                } case STORE -> {
+                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
+                    Store store = new Store(instruction[1], this);
+                    instructionsList.add(store);
+                } case LOAD -> {
+                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
+                    Load load = new Load(instruction[1], this);
+                    instructionsList.add(load);
+                } case NEGATE -> {
+                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
+                    Negate neg = new Negate(this);
+                    instructionsList.add(neg);
+                } case SQUARE_ROOT -> {
+                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
+                    SquareRoot sqr = new SquareRoot(this);
+                    instructionsList.add(sqr);
+                } case ADD -> {
+                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
+                    Add add = new Add(this);
+                    instructionsList.add(add);
+                } case SUBTRACT -> {
+                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
+                    Subtract sub = new Subtract(this);
+                    instructionsList.add(sub);
+                } case MULTIPLY -> {
+                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
+                    Multiply mul = new Multiply(this);
+                    instructionsList.add(mul);
+                } case DIVIDE -> {
+                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
+                    Divide div = new Divide(this);
+                    instructionsList.add(div);
+                } case MODULUS -> {
+                    symbolTable.set(instruction[0], Integer.parseInt(instruction[1]));
+                    Modulus mod = new Modulus(this);
+                    instructionsList.add(mod);
+                }
+            }
+        }
         System.out.println("(MAQ) Machine instructions:");
-
+        instructionsList.forEach(System.out::println);
         // TODO
     }
 
@@ -117,7 +164,43 @@ public class Maquina {
     public void execute() {
         System.out.println("(MAQ) Executing...");
 
-        // TODO
+//        for(Instruction instruction : instructionsList){
+//            switch (instruction) {
+//                case PUSH:
+//                    Push(instruction, );
+//                    break;
+//                case PRINT:
+//
+//                    break;
+//                case STORE:
+//
+//                    break;
+//                case LOAD:
+//
+//                    break;
+//                case NEGATE:
+//
+//                    break;
+//                case SQUARE_ROOT:
+//
+//                    break;
+//                case ADD:
+//
+//                    break;
+//                case SUBTRACT:
+//
+//                    break;
+//                case MULTIPLY:
+//
+//                    break;
+//                case DIVIDE:
+//
+//                    break;
+//                case MODULUS:
+//
+//                    break;
+//            }
+//        }
 
         System.out.println("(MAQ) Completed execution!");
         System.out.println("(MAQ) Symbol table:");
