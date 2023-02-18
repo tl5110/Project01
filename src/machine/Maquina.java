@@ -8,8 +8,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*; //ADDED for Arrays.toString() in assemble
 
-import static common.Errors.*;
-
 
 /**
  * The machine can process/execute a series of low level MAQ instructions using
@@ -60,9 +58,11 @@ public class Maquina {
 
     /** the terminating character when reading machine instructions from user (not file) */
     private final static String EOF = ".";
-
+    /** the table that maps the variable names to their integer values */
     private final SymbolTable symbolTable; // Stores values to variables (i.g. x = 10)
+    /** the stack for handling instructions */
     private final InstructionStack instructionStack;
+    /** the list of instructions that get assembled */
     private final List<Instruction> instructionsList;
 
     /**
@@ -140,7 +140,7 @@ public class Maquina {
                 } case MODULUS -> {
                     Modulus mod = new Modulus(this);
                     instructionsList.add(mod);
-                } default -> report(Type.ILLEGAL_INSTRUCTION, instruction[0]);
+                } default -> Errors.report(Errors.Type.ILLEGAL_INSTRUCTION, instruction[0]);
             }
         }
         System.out.println("(MAQ) Machine instructions:");
