@@ -59,20 +59,20 @@ public class Maquina {
     /** the terminating character when reading machine instructions from user (not file) */
     private final static String EOF = ".";
     /** the table that maps the variable names to their integer values */
-    private final SymbolTable symbolTable; // Stores values to variables (i.g. x = 10)
+    private static SymbolTable symbolTable; // Stores values to variables (i.g. x = 10)
     /** the stack for handling instructions */
-    private final InstructionStack instructionStack;
+    private static InstructionStack instructionStack;
     /** the list of instructions that get assembled */
-    private final List<Instruction> instructionsList;
+    private static List<Instruction> instructionsList;
 
     /**
      * Create a new machine, with an empty symbol table, instruction stack, and
      * list of instructions.
      */
     public Maquina() {
-        this.symbolTable = new SymbolTable();
-        this.instructionStack = new InstructionStack();
-        this.instructionsList = new ArrayList<>();
+        symbolTable = new SymbolTable();
+        instructionStack = new InstructionStack();
+        instructionsList = new ArrayList<>();
     }
 
     /**
