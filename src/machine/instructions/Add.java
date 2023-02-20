@@ -26,7 +26,6 @@ public class Add implements Instruction{
      */
     @Override
     public void execute() {
-        // TODO
         stack.push(stack.pop() + stack.pop());
     }
 
