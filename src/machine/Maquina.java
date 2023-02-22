@@ -101,10 +101,9 @@ public class Maquina {
      * @param stdin true if input is coming from standard input (for prompting)
      */
     public void assemble(Scanner maqIn, boolean stdin) {
-        if (stdin) {
-            System.out.print("🤖 ");
-        }
-        while (maqIn.hasNext()) {
+        if (stdin) System.out.print("🤖 ");
+        loop: while (maqIn.hasNextLine()) {
+            if (stdin) System.out.print("🤖 ");
             String[] instruction = maqIn.nextLine().strip().split("\\s+");
             switch (instruction[0]) {
                 case PUSH -> {
@@ -140,6 +139,8 @@ public class Maquina {
                 } case MODULUS -> {
                     Modulus mod = new Modulus(this);
                     instructionsList.add(mod);
+                } case EOF -> {
+                    break loop;
                 } default -> Errors.report(Errors.Type.ILLEGAL_INSTRUCTION, instruction[0]);
             }
         }
