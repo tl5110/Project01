@@ -1,33 +1,77 @@
 package interpreter.nodes.expression;
 
 import common.SymbolTable;
-
 import java.io.PrintWriter;
 import java.util.List;
+import java.lang.Math;
+import machine.Maquina;
 
+/**
+ * A calculation represented by a unary operator and its operand
+ *
+ * @author Tiffany Lee
+ */
 public class UnaryOperation implements ExpressionNode{
-//    private static final String NEG;
-//    private static final String SQRT;
-//    private static final List<String> OPERATORS;
+    /** ARB negation operator */
+    private static final String NEG = "!";
+    /** ARB square root operator */
+    private static final String SQRT  = "$";
+    /** the legal unary operators, for use when parsing */
+    private static final List<String> OPERATORS =  List.of(NEG, SQRT);
 
+    /** the operator */
     private final String operator;
+    /** the child expression */
     private final ExpressionNode child;
 
+    /**
+     * Create a new UnaryOperation node
+     *
+     * @param operator the operator
+     * @param child the child expression
+     */
     public UnaryOperation(String operator, ExpressionNode child) {
         this.operator = operator;
         this.child = child;
     }
 
+    /**
+     * Print to standard output the infix display of the child nodes
+     * preceded by the operator and without an intervening blank
+     */
     public void emit(){
-        // TODO
+        System.out.print(operator);
+        child.emit();
     }
 
+    /**
+     * Compute the result of evaluation the expression and applying the
+     * operator to it
+     *
+     * @param symTbl the symbol table, if needed, to fetch the variable values.
+     * @return the result of the computation
+     */
     public int evaluate(SymbolTable symTbl){
-        // TODO
-        return 0;
+        if(operator.equals(NEG)){
+            return -child.evaluate(symTbl);
+        } else if(operator.equals(SQRT)){
+            return (int) Math.sqrt(child.evaluate(symTbl));
+        }
+        return child.evaluate(symTbl);
     }
 
+    /**
+     * Generates the MAQ instructions for this operation
+     *
+     * @param out the stream to write output to using out.println()
+     */
     public void compile(PrintWriter out){
-        // TODO
+        if(operator.equals(NEG)){
+            child.compile(out);
+            out.println(Maquina.NEGATE);
+        } else if(operator.equals(SQRT)){
+            child.compile(out);
+            out.println(Maquina.SQUARE_ROOT);
+        }
     }
 }

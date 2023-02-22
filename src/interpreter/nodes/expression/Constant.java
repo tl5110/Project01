@@ -2,24 +2,48 @@ package interpreter.nodes.expression;
 
 import common.SymbolTable;
 import java.io.PrintWriter;
+import machine.Maquina;
 
+/**
+ * An ExpressionNode representing a constant, i.e.,
+ * a literal integer value
+ *
+ * @author Tiffany Lee
+ */
 public class Constant implements ExpressionNode{
+    /** the value */
     private final int value;
 
+    /**
+     * Creates a new constant
+     *
+     * @param value the value
+     */
     public Constant(int value) {
         this.value = value;
     }
 
+    /** Print the stored value to standard output */
     public void emit(){
-        // TODO
+        System.out.print(value);
     }
 
+    /**
+     * Return the stored value when evaluated
+     *
+     * @param symTbl the symbol table, if needed, to fetch the variable values.
+     * @return the value
+     */
     public int evaluate(SymbolTable symTbl){
-        // TODO
-        return 0;
+        return value;
     }
 
+    /**
+     * Generates the MAQ instruction for pushing the value
+     *
+     * @param out the stream to write output to using out.println()
+     */
     public void compile(PrintWriter out){
-        // TODO
+        out.println(Maquina.PUSH + " " + value);
     }
 }
