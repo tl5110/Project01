@@ -2,7 +2,6 @@ package interpreter.nodes.expression;
 
 import common.SymbolTable;
 import java.io.PrintWriter;
-import machine.Maquina;
 
 /**
  * An ExpressionNode representing a constant, i.e.,
@@ -44,6 +43,6 @@ public class Constant implements ExpressionNode{
      * @param out the stream to write output to using out.println()
      */
     public void compile(PrintWriter out){
-        out.println(Maquina.PUSH + " " + value);
+        out.println("PUSH " + value);
     }
 }

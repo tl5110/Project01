@@ -4,7 +4,6 @@ import common.SymbolTable;
 import java.io.PrintWriter;
 import java.util.List;
 import java.lang.Math;
-import machine.Maquina;
 
 /**
  * A calculation represented by a unary operator and its operand
@@ -68,10 +67,10 @@ public class UnaryOperation implements ExpressionNode{
     public void compile(PrintWriter out){
         if(operator.equals(NEG)){
             child.compile(out);
-            out.println(Maquina.NEGATE);
+            out.println("NEG");
         } else if(operator.equals(SQRT)){
             child.compile(out);
-            out.println(Maquina.SQUARE_ROOT);
+            out.println("SQRT");
         }
     }
 }

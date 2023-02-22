@@ -3,7 +3,6 @@ package interpreter.nodes.expression;
 import common.SymbolTable;
 import java.io.PrintWriter;
 import java.util.List;
-import machine.Maquina;
 
 /**
  * A calculation represented by a binary operator and its two operands
@@ -85,27 +84,23 @@ public class BinaryOperation implements ExpressionNode{
             case ADD -> {
                 leftChild.compile(out);
                 rightChild.compile(out);
-                out.println(Maquina.ADD);
-            }
-            case DIV -> {
+                out.println("ADD");
+            } case DIV -> {
                 leftChild.compile(out);
                 rightChild.compile(out);
-                out.println(Maquina.DIVIDE);
-            }
-            case MOD -> {
+                out.println("DIV");
+            } case MOD -> {
                 leftChild.compile(out);
                 rightChild.compile(out);
-                out.println(Maquina.MODULUS);
-            }
-            case MUL -> {
+                out.println("MOD");
+            } case MUL -> {
                 leftChild.compile(out);
                 rightChild.compile(out);
-                out.println(Maquina.MULTIPLY);
-            }
-            case SUB -> {
+                out.println("MUL");
+            } case SUB -> {
                 leftChild.compile(out);
                 rightChild.compile(out);
-                out.println(Maquina.SUBTRACT);
+                out.println("SUB");
             }
         }
     }

@@ -2,7 +2,6 @@ package interpreter.nodes.expression;
 
 import common.SymbolTable;
 import java.io.PrintWriter;
-import machine.Maquina;
 
 /**
  * The ExpressionNode for a simple variable
@@ -43,6 +42,6 @@ public class Variable implements ExpressionNode{
      * @param out the stream to write output to using out.println()
      */
     public void compile(PrintWriter out){
-        out.println(Maquina.LOAD + " " + name);
+        out.println("LOAD " + name);
     }
 }
