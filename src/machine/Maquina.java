@@ -158,7 +158,7 @@ public class Maquina {
 
         System.out.println("(MAQ) Completed execution!");
         System.out.println("(MAQ) Symbol table:");
-        System.out.println(symbolTable.toString() + instructionStack);
+        System.out.println(symbolTable.toString() + instructionStack.toString());
     }
 
     /**
