@@ -4,6 +4,7 @@ package machine.instructions;
  * An interface for a MAQ machine instruction.
  *
  * @author RIT CS
+ * @author Tiffany Lee
  */
 public interface Instruction {
     /**

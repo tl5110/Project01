@@ -8,6 +8,7 @@ import java.util.Map;
  * variable names to their integer values.
  *
  * @author RIT CS
+ * @author Tiffany Lee
  */
 public class SymbolTable {
     /** the symbol table */

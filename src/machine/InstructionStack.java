@@ -7,6 +7,7 @@ import java.util.List;
  * The machine's instruction stack for handling instructions.
  *
  * @author RIT CS
+ * @author Tiffany Lee
  */
 public class InstructionStack {
     /** the stack is a list */

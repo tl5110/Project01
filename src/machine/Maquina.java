@@ -6,7 +6,7 @@ import machine.instructions.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*; //ADDED for Arrays.toString() in assemble
+import java.util.*;
 
 
 /**
@@ -59,7 +59,7 @@ public class Maquina {
     /** the terminating character when reading machine instructions from user (not file) */
     private final static String EOF = ".";
     /** the table that maps the variable names to their integer values */
-    private static SymbolTable symbolTable; // Stores values to variables (i.g. x = 10)
+    private static SymbolTable symbolTable;
     /** the stack for handling instructions */
     private static InstructionStack instructionStack;
     /** the list of instructions that get assembled */

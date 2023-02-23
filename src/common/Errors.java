@@ -5,6 +5,7 @@ package common;
  * interpreter when running.
  *
  * @author RIT CS
+ * @author Tiffany Lee
  */
 public class Errors {
     /** Indicates the type of error encountered */
