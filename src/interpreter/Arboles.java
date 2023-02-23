@@ -1,12 +1,21 @@
 package interpreter;
 
 import common.Errors;
+import interpreter.nodes.action.Assignment;
+import interpreter.nodes.expression.Constant;
+import interpreter.nodes.expression.ExpressionNode;
+import machine.instructions.Push;
 
 import java.io.File;
+import java.util.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+
+// Should I have added?
+import interpreter.nodes.action.Print;
+
 
 /**
  * The main program for the high level ARB language.  It takes a program in ARB,
@@ -15,6 +24,7 @@ import java.util.Scanner;
  * compiles into MAQ instructions so that the machine, Maquina, can execute it.
  *
  * @author RIT CS
+ * @author Tiffany Lee
  */
 public class Arboles {
     /** the terminating character when reading machine instructions from user (not file) */
@@ -29,9 +39,10 @@ public class Arboles {
     private final static String TMP_MAQ_FILE = "tmp/TEMP.maq";
 
     // TODO
+//    private static List<String> tokenList = new ArrayList<>();
 
     /**
-     * Create a new Arbelos instance.  The result of this method is the tokenization
+     * Create a new Arboles instance.  The result of this method is the tokenization
      * of the entire ARB input into a list of strings.
      *
      * @param in where to read the ARB input from
@@ -39,9 +50,10 @@ public class Arboles {
      *              a terminating ".".
      */
     public Arboles(Scanner in, boolean stdin) {
-        if (stdin) {
-            System.out.print("🌳 ");
-        }
+        if (stdin) System.out.print("🌳 ");
+//        tokenList = in.tokens().toList();
+//        System.out.println(tokenList);
+
         // TODO
     }
 
@@ -50,6 +62,24 @@ public class Arboles {
      * one per line of ARB input.
      */
     public void buildProgram() {
+//        tokenList.forEach(token ->{
+//            if(token.equals(ASSIGN)){
+//
+//            }
+//        });
+
+//        while(!tokenList.isEmpty()){
+//            if(tokenList.get(0).matches("^[a-zA-Z].*")){
+//                // TODO
+//            } else if(tokenList.get(0).equals(ASSIGN)){
+//                tokenList.remove(0);
+//                String name = tokenList.remove(0);
+//                int value = Integer.parseInt(tokenList.remove(0));
+//                ExpressionNode child = new Constant(value);
+//                Assignment assign = new Assignment(name, child);
+//            }
+//        }
+
         // TODO
     }
 
