@@ -1,9 +1,10 @@
 package interpreter;
 
 import common.Errors;
+import interpreter.nodes.ArbolesNode;
+import interpreter.nodes.action.ActionNode;
 import interpreter.nodes.action.Assignment;
-import interpreter.nodes.expression.Constant;
-import interpreter.nodes.expression.ExpressionNode;
+import interpreter.nodes.expression.*;
 import machine.instructions.Push;
 
 import java.io.File;
@@ -14,7 +15,9 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 // Should I have added?
-import interpreter.nodes.action.Print;
+import interpreter.nodes.action.*;
+import javax.swing.*;
+
 
 
 /**
@@ -39,7 +42,11 @@ public class Arboles {
     private final static String TMP_MAQ_FILE = "tmp/TEMP.maq";
 
     // TODO
-//    private static List<String> tokenList = new ArrayList<>();
+    private static final List<String> tokenList = new ArrayList<>();
+    private static final List<ActionNode> actionList = new ArrayList<>();
+    private static ExpressionNode child;
+    private static ExpressionNode opChild;
+//    private static ExpressionNode var;
 
     /**
      * Create a new Arboles instance.  The result of this method is the tokenization
@@ -51,10 +58,8 @@ public class Arboles {
      */
     public Arboles(Scanner in, boolean stdin) {
         if (stdin) System.out.print("🌳 ");
-//        tokenList = in.tokens().toList();
-//        System.out.println(tokenList);
-
-        // TODO
+        in.forEachRemaining(tokenList::add);
+        System.out.println(tokenList); // DELETE LATER
     }
 
     /**
@@ -62,25 +67,56 @@ public class Arboles {
      * one per line of ARB input.
      */
     public void buildProgram() {
-//        tokenList.forEach(token ->{
-//            if(token.equals(ASSIGN)){
-//
-//            }
-//        });
+        loop: while(!tokenList.isEmpty()){
+            if (tokenList.get(0).matches("^[a-zA-Z].*")) {
+                child = new Variable(tokenList.remove(0));
+                break;
+            } else {
+                switch (tokenList.get(0)) {
+                    case "!", "$" -> {
+                        String op = tokenList.remove(0);
+                        opChild = new UnaryOperation(op, child);
+                        child = new UnaryOperation(op, child);
+                        break loop;
+                    }
+                    case "+", "/", "%", "*", "-" -> {
+                        String op = tokenList.remove(0);
+                        child = new BinaryOperation(op, opChild, child);
+                        break loop;
+                    }
+                    case ASSIGN -> {
+                        tokenList.remove(0);
+                        String name = tokenList.remove(0);
+//                        while(!tokenList.isEmpty() && !tokenList.get(0).equals(ASSIGN) && !tokenList.get(0).equals(PRINT)){
+//                            buildProgram();
+//                            Assignment assign = new Assignment(name, opChild);
+//                            actionList.add(assign);
+//                        }
 
-//        while(!tokenList.isEmpty()){
-//            if(tokenList.get(0).matches("^[a-zA-Z].*")){
-//                // TODO
-//            } else if(tokenList.get(0).equals(ASSIGN)){
-//                tokenList.remove(0);
-//                String name = tokenList.remove(0);
-//                int value = Integer.parseInt(tokenList.remove(0));
-//                ExpressionNode child = new Constant(value);
-//                Assignment assign = new Assignment(name, child);
-//            }
-//        }
+                        buildProgram();
+                        Assignment assign = new Assignment(name, child);
+                        actionList.add(assign);
+                    }
+                    case PRINT -> {
+                        tokenList.remove(0);
+//                        while(!tokenList.isEmpty() && !tokenList.get(0).equals(PRINT) && !tokenList.get(0).equals(ASSIGN)){
+//                            buildProgram();
+//                            Print print = new Print(child);
+//                            actionList.add(print);
+//                        }
 
-        // TODO
+                        buildProgram();
+                        Print print = new Print(child);
+                        actionList.add(print);
+                    }
+                    default -> {
+                        int value = Integer.parseInt(tokenList.remove(0));
+                        child = new Constant(value);
+                        break loop;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -90,7 +126,12 @@ public class Arboles {
      */
     public void displayProgram() {
         System.out.println("(ARB) infix...");
-        // TODO
+        System.out.println(actionList); // DELETE LATER
+        actionList.forEach(actionNode -> {
+            actionNode.emit();
+            System.out.print("\n");
+        });
+//        actionList.forEach(ArbolesNode::emit);
     }
 
     /**
