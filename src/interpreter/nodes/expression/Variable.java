@@ -29,7 +29,7 @@ public class Variable implements ExpressionNode{
     /**
      * Get the value of the variable name from the symbol table
      *
-     * @param symTbl the symbol table, if needed, to fetch the variable values.
+     * @param symTbl the table containing all variable values
      * @return this variable's current value in the symbol table
      */
     public int evaluate(SymbolTable symTbl){

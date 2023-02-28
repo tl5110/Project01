@@ -30,7 +30,7 @@ public class Constant implements ExpressionNode{
     /**
      * Return the stored value when evaluated
      *
-     * @param symTbl the symbol table, if needed, to fetch the variable values.
+     * @param symTbl the symbol table is ignored here
      * @return the value
      */
     public int evaluate(SymbolTable symTbl){
