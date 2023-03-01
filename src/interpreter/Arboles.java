@@ -6,6 +6,7 @@ import interpreter.nodes.ArbolesNode;
 import interpreter.nodes.action.ActionNode;
 import interpreter.nodes.action.Assignment;
 import interpreter.nodes.expression.*;
+import machine.Maquina;
 import machine.instructions.Push;
 
 import java.io.File;
@@ -56,10 +57,16 @@ public class Arboles {
      * @param stdin if true, the user should be prompted to enter ARB statements until
      *              a terminating ".".
      */
+
+//    private void
     public Arboles(Scanner in, boolean stdin) {
         if (stdin) System.out.print("🌳 ");
-        in.forEachRemaining(tokenList::add);
-        System.out.println(tokenList); // DELETE LATER
+        System.out.println("(ARB) prefix...");
+        while (in.hasNextLine()){
+            String token = in.nextLine();
+            System.out.println(token);
+            tokenList.addAll(List.of(token.strip().split("\\s+")));
+        }
     }
 
     public ExpressionNode getExpression(List<String> tokenList) {
@@ -78,7 +85,7 @@ public class Arboles {
     }
 
     /**
-     * Build the parse trees into the program which is a list of ActioNode's -
+     * Build the parse trees into the program which is a list of ActionNode's -
      * one per line of ARB input.
      */
     public void buildProgram() {
@@ -87,11 +94,13 @@ public class Arboles {
             if (tokenList.get(0).equals(ASSIGN)) {
                 tokenList.remove(0);
                 String name = tokenList.remove(0);
-                Assignment assign = new Assignment(name, getExpression(tokenList));
+                child = getExpression(tokenList);
+                Assignment assign = new Assignment(name, child);
                 actionList.add(assign);
             } else if (tokenList.get(0).equals(PRINT)) {
                 tokenList.remove(0);
-                Print print = new Print(getExpression(tokenList));
+                child = getExpression(tokenList);
+                Print print = new Print(child);
                 actionList.add(print);
             }
 //            if(tokenList.get(0).matches("^[a-zA-Z].*")) { // Variable
@@ -135,7 +144,6 @@ public class Arboles {
      */
     public void displayProgram() {
         System.out.println("(ARB) infix...");
-//        System.out.println(actionList); // DELETE LATER
         actionList.forEach(actionNode -> {
             actionNode.emit();
             System.out.print("\n");
@@ -144,7 +152,7 @@ public class Arboles {
 
     /**
      * Execute the ARB program of ActionNode's to standard output using execute().
-     * In order to execute the ActioNodes, a local SymbolTable must be created here
+     * In order to execute the ActionNodes, a local SymbolTable must be created here
      * for use.
      */
     public void interpretProgram() {
@@ -152,7 +160,7 @@ public class Arboles {
         System.out.println("(ARB) interpreting program...");
         actionList.forEach(actionNode -> actionNode.execute(symbolTable));
         System.out.println("(ARB) Symbol table:");
-        System.out.println(symbolTable);
+        System.out.print(symbolTable);
     }
 
     /**
@@ -175,7 +183,9 @@ public class Arboles {
      * @throws FileNotFoundException if the MAQ file cannot be found.
      */
     public void executeProgram() throws FileNotFoundException {
-        // TODO
+        Maquina maquina = new Maquina();
+        maquina.assemble(new Scanner(new File(TMP_MAQ_FILE)), false);
+        maquina.execute();
     }
 
     /**
