@@ -1,6 +1,7 @@
 package interpreter;
 
 import common.Errors;
+import common.SymbolTable;
 import interpreter.nodes.ArbolesNode;
 import interpreter.nodes.action.ActionNode;
 import interpreter.nodes.action.Assignment;
@@ -41,11 +42,10 @@ public class Arboles {
     /** the location to generate the compiled ARB program of MAQ instructions */
     private final static String TMP_MAQ_FILE = "tmp/TEMP.maq";
 
-    // TODO
     private static final List<String> tokenList = new ArrayList<>();
     private static final List<ActionNode> actionList = new ArrayList<>();
     private static ExpressionNode child;
-    private static ExpressionNode opChild;
+//    private static ExpressionNode opChild;
 //    private static ExpressionNode var;
 
     /**
@@ -62,60 +62,69 @@ public class Arboles {
         System.out.println(tokenList); // DELETE LATER
     }
 
+    public ExpressionNode getExpression(List<String> tokenList) {
+        if (tokenList.get(0).equals("!") || tokenList.get(0).equals("$")) {
+            return new UnaryOperation(tokenList.remove(0), getExpression(tokenList));
+        } else if (tokenList.get(0).equals("+") || tokenList.get(0).equals("/") ||
+                tokenList.get(0).equals("%") || tokenList.get(0).equals("*") ||
+                tokenList.get(0).equals("-")) {
+            return new BinaryOperation(tokenList.remove(0), getExpression(tokenList), getExpression(tokenList));
+        } else if(tokenList.get(0).matches("^[a-zA-Z].*")) {
+            return child = new Variable(tokenList.remove(0));
+        } else {
+            int value = Integer.parseInt(tokenList.remove(0));
+            return child = new Constant(value);
+        }
+    }
+
     /**
      * Build the parse trees into the program which is a list of ActioNode's -
      * one per line of ARB input.
      */
     public void buildProgram() {
-        loop: while(!tokenList.isEmpty()){
-            if (tokenList.get(0).matches("^[a-zA-Z].*")) {
-                child = new Variable(tokenList.remove(0));
-                break;
-            } else {
-                switch (tokenList.get(0)) {
-                    case "!", "$" -> {
-                        String op = tokenList.remove(0);
-                        opChild = new UnaryOperation(op, child);
-                        child = new UnaryOperation(op, child);
-                        break loop;
-                    }
-                    case "+", "/", "%", "*", "-" -> {
-                        String op = tokenList.remove(0);
-                        child = new BinaryOperation(op, opChild, child);
-                        break loop;
-                    }
-                    case ASSIGN -> {
-                        tokenList.remove(0);
-                        String name = tokenList.remove(0);
-//                        while(!tokenList.isEmpty() && !tokenList.get(0).equals(ASSIGN) && !tokenList.get(0).equals(PRINT)){
-//                            buildProgram();
-//                            Assignment assign = new Assignment(name, opChild);
-//                            actionList.add(assign);
-//                        }
-
-                        buildProgram();
-                        Assignment assign = new Assignment(name, child);
-                        actionList.add(assign);
-                    }
-                    case PRINT -> {
-                        tokenList.remove(0);
-//                        while(!tokenList.isEmpty() && !tokenList.get(0).equals(PRINT) && !tokenList.get(0).equals(ASSIGN)){
-//                            buildProgram();
-//                            Print print = new Print(child);
-//                            actionList.add(print);
-//                        }
-
-                        buildProgram();
-                        Print print = new Print(child);
-                        actionList.add(print);
-                    }
-                    default -> {
-                        int value = Integer.parseInt(tokenList.remove(0));
-                        child = new Constant(value);
-                        break loop;
-                    }
-                }
+        while(!tokenList.isEmpty()) {
+            // WORKS
+            if (tokenList.get(0).equals(ASSIGN)) {
+                tokenList.remove(0);
+                String name = tokenList.remove(0);
+                Assignment assign = new Assignment(name, getExpression(tokenList));
+                actionList.add(assign);
+            } else if (tokenList.get(0).equals(PRINT)) {
+                tokenList.remove(0);
+                Print print = new Print(getExpression(tokenList));
+                actionList.add(print);
             }
+//            if(tokenList.get(0).matches("^[a-zA-Z].*")) { // Variable
+//                child = new Variable(tokenList.remove(0));
+//
+//
+//            } else if (tokenList.get(0).equals("!") || tokenList.get(0).equals("$")) { //UnaryOp
+//                child = new UnaryOperation(tokenList.remove(0), new Variable(tokenList.remove(0)));
+//
+//
+//            } else if (tokenList.get(0).equals("+") || tokenList.get(0).equals("/") || //BinaryOp
+//                    tokenList.get(0).equals("%") || tokenList.get(0).equals("*") ||
+//                    tokenList.get(0).equals("-")) {
+//                child = new BinaryOperation(tokenList.remove(0), getExpression(tokenList), getExpression(tokenList));
+//
+//
+//            } else if (tokenList.get(0).equals(ASSIGN)) { //ASSIGN
+//                tokenList.remove(0);
+//                String name = tokenList.remove(0);
+//                Assignment assign = new Assignment(name, getExpression(tokenList));
+//                actionList.add(assign);
+//
+//
+//            } else if (tokenList.get(0).equals(PRINT)) { //PRINT
+//                tokenList.remove(0);
+//                Print print = new Print(getExpression(tokenList));
+//                actionList.add(print);
+//
+//
+//            } else {
+//                int value = Integer.parseInt(tokenList.remove(0));
+//                child = new Constant(value);
+//            }
         }
     }
 
@@ -126,12 +135,11 @@ public class Arboles {
      */
     public void displayProgram() {
         System.out.println("(ARB) infix...");
-        System.out.println(actionList); // DELETE LATER
+//        System.out.println(actionList); // DELETE LATER
         actionList.forEach(actionNode -> {
             actionNode.emit();
             System.out.print("\n");
         });
-//        actionList.forEach(ArbolesNode::emit);
     }
 
     /**
@@ -140,11 +148,11 @@ public class Arboles {
      * for use.
      */
     public void interpretProgram() {
+        SymbolTable symbolTable = new SymbolTable();
         System.out.println("(ARB) interpreting program...");
-        // TODO
-
+        actionList.forEach(actionNode -> actionNode.execute(symbolTable));
         System.out.println("(ARB) Symbol table:");
-        // TODO
+        System.out.println(symbolTable);
     }
 
     /**
@@ -156,9 +164,7 @@ public class Arboles {
     public void compileProgram() throws IOException {
         System.out.println("(ARB) compiling program to " + TMP_MAQ_FILE + "...");
         PrintWriter out = new PrintWriter(TMP_MAQ_FILE);
-
-        // TODO
-
+        actionList.forEach(actionNode -> actionNode.compile(out));
         out.close();
     }
 

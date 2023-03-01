@@ -23,7 +23,7 @@ public class Print implements ActionNode{
     }
 
     /**
-     * Prints teh statement to standard output in the format "Print"
+     * Prints the statement to standard output in the format "Print"
      * followed by the infix form of the expression
      */
     public void emit(){
