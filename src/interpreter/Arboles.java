@@ -57,8 +57,6 @@ public class Arboles {
      * @param stdin if true, the user should be prompted to enter ARB statements until
      *              a terminating ".".
      */
-
-//    private void
     public Arboles(Scanner in, boolean stdin) {
         if (stdin) System.out.print("🌳 ");
         System.out.println("(ARB) prefix...");
@@ -70,18 +68,24 @@ public class Arboles {
     }
 
     public ExpressionNode getExpression(List<String> tokenList) {
-        if (tokenList.get(0).equals("!") || tokenList.get(0).equals("$")) {
-            return new UnaryOperation(tokenList.remove(0), getExpression(tokenList));
-        } else if (tokenList.get(0).equals("+") || tokenList.get(0).equals("/") ||
-                tokenList.get(0).equals("%") || tokenList.get(0).equals("*") ||
-                tokenList.get(0).equals("-")) {
-            return new BinaryOperation(tokenList.remove(0), getExpression(tokenList), getExpression(tokenList));
-        } else if(tokenList.get(0).matches("^[a-zA-Z].*")) {
-            return child = new Variable(tokenList.remove(0));
-        } else {
+            if (tokenList.get(0).equals("!") || tokenList.get(0).equals("$")) {
+                return new UnaryOperation(tokenList.remove(0), getExpression(tokenList));
+            } else if (tokenList.get(0).equals("+") || tokenList.get(0).equals("/") ||
+                    tokenList.get(0).equals("%") || tokenList.get(0).equals("*") ||
+                    tokenList.get(0).equals("-")) {
+                return new BinaryOperation(tokenList.remove(0), getExpression(tokenList), getExpression(tokenList));
+            } else if (tokenList.get(0).matches("^[a-zA-Z].*")) {
+                return child = new Variable(tokenList.remove(0));
+            } else if(tokenList.get(0).matches("^[0-9].*")){ //"^-?[1-9]"
+                // PUT THIS IN BC OF ERROR 3 BUT CAUSES PROBLEMS WITH CHECKING ERROR 5
             int value = Integer.parseInt(tokenList.remove(0));
             return child = new Constant(value);
         }
+            return null;
+//            else if(tokenList.get(0).matches("^[0-9].*")){ //"^-?[1-9]"
+//            int value = Integer.parseInt(tokenList.remove(0));
+//            return child = new Constant(value);
+//        }
     }
 
     /**
@@ -90,7 +94,6 @@ public class Arboles {
      */
     public void buildProgram() {
         while(!tokenList.isEmpty()) {
-            // WORKS
             if (tokenList.get(0).equals(ASSIGN)) {
                 tokenList.remove(0);
                 String name = tokenList.remove(0);
@@ -102,7 +105,10 @@ public class Arboles {
                 child = getExpression(tokenList);
                 Print print = new Print(child);
                 actionList.add(print);
+            } else {
+                Errors.report(Errors.Type.ILLEGAL_ACTION, tokenList.get(0));
             }
+
 //            if(tokenList.get(0).matches("^[a-zA-Z].*")) { // Variable
 //                child = new Variable(tokenList.remove(0));
 //

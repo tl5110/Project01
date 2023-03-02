@@ -1,5 +1,6 @@
 package interpreter.nodes.expression;
 
+import common.Errors;
 import common.SymbolTable;
 import java.io.PrintWriter;
 import java.util.List;
@@ -51,10 +52,14 @@ public class UnaryOperation implements ExpressionNode{
      * @return the result of the computation
      */
     public int evaluate(SymbolTable symTbl){
+        int evaluated = (int) Math.sqrt(child.evaluate(symTbl));
         if(operator.equals(NEG)){
             return -child.evaluate(symTbl);
         } else if(operator.equals(SQRT)){
-            return (int) Math.sqrt(child.evaluate(symTbl));
+            if(evaluated < 0){
+                Errors.report(Errors.Type.NEGATIVE_SQUARE_ROOT);
+            }
+            return evaluated;
         }
         return child.evaluate(symTbl);
     }
@@ -71,6 +76,8 @@ public class UnaryOperation implements ExpressionNode{
         } else if(operator.equals(SQRT)){
             child.compile(out);
             out.println("SQRT");
+        } else {
+            Errors.report(Errors.Type.ILLEGAL_OPERATOR, operator);
         }
     }
 }

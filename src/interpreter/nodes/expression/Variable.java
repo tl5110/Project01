@@ -1,5 +1,6 @@
 package interpreter.nodes.expression;
 
+import common.Errors;
 import common.SymbolTable;
 import java.io.PrintWriter;
 
@@ -33,6 +34,9 @@ public class Variable implements ExpressionNode{
      * @return this variable's current value in the symbol table
      */
     public int evaluate(SymbolTable symTbl){
+        if(!symTbl.has(name)){
+            Errors.report(Errors.Type.UNINITIALIZED, name);
+        }
         return symTbl.get(name);
     }
 

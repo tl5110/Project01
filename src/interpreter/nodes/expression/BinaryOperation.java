@@ -1,5 +1,6 @@
 package interpreter.nodes.expression;
 
+import common.Errors;
 import common.SymbolTable;
 import java.io.PrintWriter;
 import java.util.List;
@@ -64,13 +65,20 @@ public class BinaryOperation implements ExpressionNode{
      * @return the result of the computation
      */
     public int evaluate(SymbolTable symTbl){
+        int left = leftChild.evaluate(symTbl);
+        int right = rightChild.evaluate(symTbl);
         return switch (operator) {
-            case ADD -> leftChild.evaluate(symTbl) + rightChild.evaluate(symTbl);
-            case DIV -> leftChild.evaluate(symTbl) / rightChild.evaluate(symTbl);
-            case MOD -> leftChild.evaluate(symTbl) % rightChild.evaluate(symTbl);
-            case MUL -> leftChild.evaluate(symTbl) * rightChild.evaluate(symTbl);
-            case SUB -> leftChild.evaluate(symTbl) - rightChild.evaluate(symTbl);
-            default -> leftChild.evaluate(symTbl);
+            case ADD -> left + right;
+            case DIV -> {
+                if(right == 0){
+                    Errors.report(Errors.Type.DIVIDE_BY_ZERO);
+                }
+                yield left / right;
+            }
+            case MOD -> left % right;
+            case MUL -> left * right;
+            case SUB -> left - right;
+            default -> left;
         };
     }
 
@@ -101,7 +109,7 @@ public class BinaryOperation implements ExpressionNode{
                 leftChild.compile(out);
                 rightChild.compile(out);
                 out.println("SUB");
-            }
+            } default -> Errors.report(Errors.Type.ILLEGAL_OPERATOR, operator);
         }
     }
 }
