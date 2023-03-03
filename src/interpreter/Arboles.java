@@ -24,6 +24,7 @@ import interpreter.nodes.action.*;
  * converts it into a token list, builds the parse trees for each statement,
  * displays the program in infix, interprets/evaluates the program, then
  * compiles into MAQ instructions so that the machine, Maquina, can execute it.
+ *
  * @author RIT CS
  * @author Tiffany Lee
  */

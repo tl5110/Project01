@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * A calculation represented by a binary operator and its two operands
+ *
  * @author Tiffany Lee
  */
 public class BinaryOperation implements ExpressionNode{

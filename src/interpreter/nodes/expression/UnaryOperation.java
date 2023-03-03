@@ -8,6 +8,7 @@ import java.lang.Math;
 
 /**
  * A calculation represented by a unary operator and its operand
+ *
  * @author Tiffany Lee
  */
 public class UnaryOperation implements ExpressionNode{
