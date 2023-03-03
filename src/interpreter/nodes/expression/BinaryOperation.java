@@ -22,7 +22,7 @@ public class BinaryOperation implements ExpressionNode{
     /** ARB subtraction operator */
     private static final String SUB = "-";
     /** the legal binary operators, for use when parsing */
-    private static final List<String> OPERATORS =
+    public static final List<String> OPERATORS =
             List.of(ADD, DIV, MOD, MUL, SUB);
 
     /** the operator */

@@ -43,7 +43,7 @@ public class Arboles {
     private static final List<String> tokenList = new ArrayList<>();
     /** the list of Action nodes */
     private static final List<ActionNode> actionList = new ArrayList<>();
-    /** the ExpressionNode */
+    /** the Expression Node */
     private static ExpressionNode child;
 
 
@@ -58,7 +58,7 @@ public class Arboles {
     public Arboles(Scanner in, boolean stdin) {
         if (stdin) System.out.print("🌳 ");
         System.out.println("(ARB) prefix...");
-        while (in.hasNextLine()){
+        while (in.hasNextLine()){ //&& !in.equals(EOF)
             String token = in.nextLine();
             System.out.println(token);
             tokenList.addAll(List.of(token.strip().split("\\s+")));
@@ -76,16 +76,13 @@ public class Arboles {
     public ExpressionNode getExpression(List<String> tokenList) {
         if(tokenList.size() == 0){
             Errors.report(Errors.Type.PREMATURE_END);
-        } else if (tokenList.get(0).equals("!") || tokenList.get(0).equals("$")) {
+        } else if (UnaryOperation.OPERATORS.contains(tokenList.get(0))) {
             return new UnaryOperation(tokenList.remove(0), getExpression(tokenList));
-        } else if (tokenList.get(0).equals("+") || tokenList.get(0).equals("/") ||
-                tokenList.get(0).equals("%") || tokenList.get(0).equals("*") ||
-                tokenList.get(0).equals("-")) {
+        } else if (BinaryOperation.OPERATORS.contains(tokenList.get(0))) {
             return new BinaryOperation(tokenList.remove(0), getExpression(tokenList), getExpression(tokenList));
         } else if (tokenList.get(0).matches("^[a-zA-Z].*")) {
             return child = new Variable(tokenList.remove(0));
         } else if(tokenList.get(0).matches("^-?[0-9].*")){
-            // PUT THIS IN BC OF ERROR 3 BUT CAUSES PROBLEMS WITH CHECKING ERROR 5
             int value = Integer.parseInt(tokenList.remove(0));
             return child = new Constant(value);
         } else {

@@ -17,7 +17,7 @@ public class UnaryOperation implements ExpressionNode{
     /** ARB square root operator */
     private static final String SQRT  = "$";
     /** the legal unary operators, for use when parsing */
-    private static final List<String> OPERATORS =  List.of(NEG, SQRT);
+    public static final List<String> OPERATORS =  List.of(NEG, SQRT);
 
     /** the operator */
     private final String operator;
