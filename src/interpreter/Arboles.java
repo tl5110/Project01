@@ -76,16 +76,12 @@ public class Arboles {
                 return new BinaryOperation(tokenList.remove(0), getExpression(tokenList), getExpression(tokenList));
             } else if (tokenList.get(0).matches("^[a-zA-Z].*")) {
                 return child = new Variable(tokenList.remove(0));
-            } else if(tokenList.get(0).matches("^[0-9].*")){ //"^-?[1-9]"
+            } else if(tokenList.get(0).matches("^-?[0-9].*")){
                 // PUT THIS IN BC OF ERROR 3 BUT CAUSES PROBLEMS WITH CHECKING ERROR 5
-            int value = Integer.parseInt(tokenList.remove(0));
-            return child = new Constant(value);
-        }
+                int value = Integer.parseInt(tokenList.remove(0));
+                return child = new Constant(value);
+            }
             return null;
-//            else if(tokenList.get(0).matches("^[0-9].*")){ //"^-?[1-9]"
-//            int value = Integer.parseInt(tokenList.remove(0));
-//            return child = new Constant(value);
-//        }
     }
 
     /**

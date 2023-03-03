@@ -52,14 +52,13 @@ public class UnaryOperation implements ExpressionNode{
      * @return the result of the computation
      */
     public int evaluate(SymbolTable symTbl){
-        int evaluated = (int) Math.sqrt(child.evaluate(symTbl));
         if(operator.equals(NEG)){
             return -child.evaluate(symTbl);
         } else if(operator.equals(SQRT)){
-            if(evaluated < 0){
+            if(child.evaluate(symTbl) < 0){
                 Errors.report(Errors.Type.NEGATIVE_SQUARE_ROOT);
             }
-            return evaluated;
+            return (int) Math.sqrt(child.evaluate(symTbl));
         }
         return child.evaluate(symTbl);
     }
