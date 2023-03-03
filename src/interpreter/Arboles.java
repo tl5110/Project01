@@ -15,10 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
-
-// Should I have added?
 import interpreter.nodes.action.*;
-import javax.swing.*;
 
 
 
@@ -34,7 +31,6 @@ import javax.swing.*;
 public class Arboles {
     /** the terminating character when reading machine instructions from user (not file) */
     private final static String EOF = ".";
-
     /** the ARB print token */
     private final static String PRINT = "@";
     /** the ARB assignment token */
@@ -43,11 +39,13 @@ public class Arboles {
     /** the location to generate the compiled ARB program of MAQ instructions */
     private final static String TMP_MAQ_FILE = "tmp/TEMP.maq";
 
+    /** the list of tokens  */
     private static final List<String> tokenList = new ArrayList<>();
+    /** the list of Action nodes */
     private static final List<ActionNode> actionList = new ArrayList<>();
+    /** the ExpressionNode */
     private static ExpressionNode child;
-//    private static ExpressionNode opChild;
-//    private static ExpressionNode var;
+
 
     /**
      * Create a new Arboles instance.  The result of this method is the tokenization
@@ -67,21 +65,33 @@ public class Arboles {
         }
     }
 
+    /**
+     * A recursive helper function that parses enough of the inputted token list
+     * to get the fully represented expression and returns the root as an
+     * Expression node
+     *
+     * @param tokenList list of tokens
+     * @return Expression Node
+     */
     public ExpressionNode getExpression(List<String> tokenList) {
-            if (tokenList.get(0).equals("!") || tokenList.get(0).equals("$")) {
-                return new UnaryOperation(tokenList.remove(0), getExpression(tokenList));
-            } else if (tokenList.get(0).equals("+") || tokenList.get(0).equals("/") ||
-                    tokenList.get(0).equals("%") || tokenList.get(0).equals("*") ||
-                    tokenList.get(0).equals("-")) {
-                return new BinaryOperation(tokenList.remove(0), getExpression(tokenList), getExpression(tokenList));
-            } else if (tokenList.get(0).matches("^[a-zA-Z].*")) {
-                return child = new Variable(tokenList.remove(0));
-            } else if(tokenList.get(0).matches("^-?[0-9].*")){
-                // PUT THIS IN BC OF ERROR 3 BUT CAUSES PROBLEMS WITH CHECKING ERROR 5
-                int value = Integer.parseInt(tokenList.remove(0));
-                return child = new Constant(value);
-            }
-            return null;
+        if(tokenList.size() == 0){
+            Errors.report(Errors.Type.PREMATURE_END);
+        } else if (tokenList.get(0).equals("!") || tokenList.get(0).equals("$")) {
+            return new UnaryOperation(tokenList.remove(0), getExpression(tokenList));
+        } else if (tokenList.get(0).equals("+") || tokenList.get(0).equals("/") ||
+                tokenList.get(0).equals("%") || tokenList.get(0).equals("*") ||
+                tokenList.get(0).equals("-")) {
+            return new BinaryOperation(tokenList.remove(0), getExpression(tokenList), getExpression(tokenList));
+        } else if (tokenList.get(0).matches("^[a-zA-Z].*")) {
+            return child = new Variable(tokenList.remove(0));
+        } else if(tokenList.get(0).matches("^-?[0-9].*")){
+            // PUT THIS IN BC OF ERROR 3 BUT CAUSES PROBLEMS WITH CHECKING ERROR 5
+            int value = Integer.parseInt(tokenList.remove(0));
+            return child = new Constant(value);
+        } else {
+            Errors.report(Errors.Type.ILLEGAL_OPERATOR, tokenList.get(0));
+        }
+        return null;
     }
 
     /**
@@ -104,38 +114,6 @@ public class Arboles {
             } else {
                 Errors.report(Errors.Type.ILLEGAL_ACTION, tokenList.get(0));
             }
-
-//            if(tokenList.get(0).matches("^[a-zA-Z].*")) { // Variable
-//                child = new Variable(tokenList.remove(0));
-//
-//
-//            } else if (tokenList.get(0).equals("!") || tokenList.get(0).equals("$")) { //UnaryOp
-//                child = new UnaryOperation(tokenList.remove(0), new Variable(tokenList.remove(0)));
-//
-//
-//            } else if (tokenList.get(0).equals("+") || tokenList.get(0).equals("/") || //BinaryOp
-//                    tokenList.get(0).equals("%") || tokenList.get(0).equals("*") ||
-//                    tokenList.get(0).equals("-")) {
-//                child = new BinaryOperation(tokenList.remove(0), getExpression(tokenList), getExpression(tokenList));
-//
-//
-//            } else if (tokenList.get(0).equals(ASSIGN)) { //ASSIGN
-//                tokenList.remove(0);
-//                String name = tokenList.remove(0);
-//                Assignment assign = new Assignment(name, getExpression(tokenList));
-//                actionList.add(assign);
-//
-//
-//            } else if (tokenList.get(0).equals(PRINT)) { //PRINT
-//                tokenList.remove(0);
-//                Print print = new Print(getExpression(tokenList));
-//                actionList.add(print);
-//
-//
-//            } else {
-//                int value = Integer.parseInt(tokenList.remove(0));
-//                child = new Constant(value);
-//            }
         }
     }
 

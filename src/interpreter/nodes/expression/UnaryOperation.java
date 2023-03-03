@@ -75,8 +75,6 @@ public class UnaryOperation implements ExpressionNode{
         } else if(operator.equals(SQRT)){
             child.compile(out);
             out.println("SQRT");
-        } else {
-            Errors.report(Errors.Type.ILLEGAL_OPERATOR, operator);
         }
     }
 }

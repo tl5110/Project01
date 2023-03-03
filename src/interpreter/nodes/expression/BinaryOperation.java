@@ -109,7 +109,7 @@ public class BinaryOperation implements ExpressionNode{
                 leftChild.compile(out);
                 rightChild.compile(out);
                 out.println("SUB");
-            } default -> Errors.report(Errors.Type.ILLEGAL_OPERATOR, operator);
+            }
         }
     }
 }
