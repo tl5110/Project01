@@ -35,17 +35,14 @@ public class Arboles {
     private final static String PRINT = "@";
     /** the ARB assignment token */
     private final static String ASSIGN = "=";
-
     /** the location to generate the compiled ARB program of MAQ instructions */
     private final static String TMP_MAQ_FILE = "tmp/TEMP.maq";
-
     /** the list of tokens  */
     private static final List<String> tokenList = new ArrayList<>();
     /** the list of Action nodes */
     private static final List<ActionNode> actionList = new ArrayList<>();
     /** the Expression Node */
     private static ExpressionNode child;
-
 
     /**
      * Create a new Arboles instance.  The result of this method is the tokenization
@@ -70,8 +67,8 @@ public class Arboles {
      * to get the fully represented expression and returns the root as an
      * Expression node
      *
-     * @param tokenList list of tokens
-     * @return Expression Node
+     * @param tokenList the list of tokens
+     * @return an Expression Node
      */
     public ExpressionNode getExpression(List<String> tokenList) {
         if(tokenList.size() == 0){
@@ -113,7 +110,6 @@ public class Arboles {
             }
         }
     }
-
 
     /**
      * Displays the entire ARB program of ActionNode's to standard
