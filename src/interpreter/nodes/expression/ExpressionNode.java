@@ -9,6 +9,7 @@ import interpreter.nodes.ArbolesNode;
  * of the program when evaluated, i.e., the symbol table.
  *
  * @author RIT CS
+ * @author Tiffany Lee
  */
 public interface ExpressionNode extends ArbolesNode {
     /**

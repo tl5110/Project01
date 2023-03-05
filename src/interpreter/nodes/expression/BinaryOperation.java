@@ -13,17 +13,16 @@ import java.util.List;
 public class BinaryOperation implements ExpressionNode{
     /** ARB addition operator */
     private static final String ADD = "+";
+    /** ARB subtraction operator */
+    private static final String SUB = "-";
+    /** ARB multiply operator */
+    private static final String MUL = "*";
     /** ARB division operator */
     private static final String DIV = "/";
     /** ARB modulus operator */
     private static final String MOD = "%";
-    /** ARB multiply operator */
-    private static final String MUL = "*";
-    /** ARB subtraction operator */
-    private static final String SUB = "-";
     /** the legal binary operators, for use when parsing */
-    public static final List<String> OPERATORS =
-            List.of(ADD, DIV, MOD, MUL, SUB);
+    public static final List<String> OPERATORS = List.of(ADD, SUB, MUL, DIV, MOD);
 
     /** the operator */
     private final String operator;
@@ -69,6 +68,8 @@ public class BinaryOperation implements ExpressionNode{
         int right = rightChild.evaluate(symTbl);
         return switch (operator) {
             case ADD -> left + right;
+            case SUB -> left - right;
+            case MUL -> left * right;
             case DIV -> {
                 if(right == 0){
                     Errors.report(Errors.Type.DIVIDE_BY_ZERO);
@@ -76,8 +77,6 @@ public class BinaryOperation implements ExpressionNode{
                 yield left / right;
             }
             case MOD -> left % right;
-            case MUL -> left * right;
-            case SUB -> left - right;
             default -> left;
         };
     }
@@ -93,6 +92,14 @@ public class BinaryOperation implements ExpressionNode{
                 leftChild.compile(out);
                 rightChild.compile(out);
                 out.println("ADD");
+            } case SUB -> {
+                leftChild.compile(out);
+                rightChild.compile(out);
+                out.println("SUB");
+            } case MUL -> {
+                leftChild.compile(out);
+                rightChild.compile(out);
+                out.println("MUL");
             } case DIV -> {
                 leftChild.compile(out);
                 rightChild.compile(out);
@@ -101,14 +108,6 @@ public class BinaryOperation implements ExpressionNode{
                 leftChild.compile(out);
                 rightChild.compile(out);
                 out.println("MOD");
-            } case MUL -> {
-                leftChild.compile(out);
-                rightChild.compile(out);
-                out.println("MUL");
-            } case SUB -> {
-                leftChild.compile(out);
-                rightChild.compile(out);
-                out.println("SUB");
             }
         }
     }

@@ -23,15 +23,6 @@ public class Print implements ActionNode{
     }
 
     /**
-     * Prints the statement to standard output in the format "Print"
-     * followed by the infix form of the expression
-     */
-    public void emit(){
-        System.out.print("Print ");
-        child.emit();
-    }
-
-    /**
      * Evaluates the child expression and prints the result to
      * standard output
      *
@@ -39,6 +30,15 @@ public class Print implements ActionNode{
      */
     public void execute(SymbolTable symbol){
         System.out.println(child.evaluate(symbol));
+    }
+
+    /**
+     * Prints the statement to standard output in the format "Print"
+     * followed by the infix form of the expression
+     */
+    public void emit(){
+        System.out.print("Print ");
+        child.emit();
     }
 
     /**

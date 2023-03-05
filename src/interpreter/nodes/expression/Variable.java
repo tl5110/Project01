@@ -10,7 +10,7 @@ import java.io.PrintWriter;
  * @author Tiffany Lee
  */
 public class Variable implements ExpressionNode{
-    /** the name */
+    /** the name of the variable */
     private final String name;
 
     /**

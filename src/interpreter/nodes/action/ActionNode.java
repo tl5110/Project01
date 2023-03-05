@@ -9,6 +9,7 @@ import interpreter.nodes.ArbolesNode;
  * useful when the nodes are directly executed by the Arboles interpreter.
  *
  * @author RIT CS
+ * @author Tiffany Lee
  */
 public interface ActionNode extends ArbolesNode {
     /**

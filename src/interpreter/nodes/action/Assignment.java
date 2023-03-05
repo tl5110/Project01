@@ -20,13 +20,22 @@ public class Assignment implements ActionNode {
      * Creates a new Assignment node with an identifier name and child
      * expression
      *
-     * @param name the name fo the variable that is getting a new value
+     * @param name the name of the variable that is getting a new value
      * @param child the expression on the right-hand-side (RHS) of the
      *              assignment statement
      */
     public Assignment(String name, ExpressionNode child) {
         this.name = name;
         this.child = child;
+    }
+
+    /**
+     * Evaluates the child expression and assigns the result to the variable
+     *
+     * @param symbol the table where variable values are stored
+     */
+    public void execute(SymbolTable symbol){
+        symbol.set(name, child.evaluate(symbol));
     }
 
     /**
@@ -37,15 +46,6 @@ public class Assignment implements ActionNode {
     public void emit(){
         System.out.print(name + " = ");
         child.emit();
-    }
-
-    /**
-     * Evaluates the child expression and assigns the result to the variable
-     *
-     * @param symbol the table where variable values are stored
-     */
-    public void execute(SymbolTable symbol){
-        symbol.set(name, child.evaluate(symbol));
     }
 
     /**

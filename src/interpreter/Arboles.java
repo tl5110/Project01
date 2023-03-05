@@ -41,8 +41,6 @@ public class Arboles {
     private static final List<String> tokenList = new ArrayList<>();
     /** the list of Action nodes */
     private static final List<ActionNode> actionList = new ArrayList<>();
-    /** the Expression Node */
-    private static ExpressionNode child;
 
     /**
      * Create a new Arboles instance.  The result of this method is the tokenization
@@ -70,18 +68,23 @@ public class Arboles {
      * @param tokenList the list of tokens
      * @return an Expression Node
      */
-    public ExpressionNode getExpression(List<String> tokenList) {
+    public ExpressionNode helpBuild(List<String> tokenList) {
         if(tokenList.size() == 0){
             Errors.report(Errors.Type.PREMATURE_END);
-        } else if (UnaryOperation.OPERATORS.contains(tokenList.get(0))) {
-            return new UnaryOperation(tokenList.remove(0), getExpression(tokenList));
-        } else if (BinaryOperation.OPERATORS.contains(tokenList.get(0))) {
-            return new BinaryOperation(tokenList.remove(0), getExpression(tokenList), getExpression(tokenList));
-        } else if (tokenList.get(0).matches("^[a-zA-Z].*")) {
-            return child = new Variable(tokenList.remove(0));
-        } else if(tokenList.get(0).matches("^-?[0-9].*")){
+
+        } else if (UnaryOperation.OPERATORS.contains(tokenList.get(0))) { //UnaryOperation
+            return new UnaryOperation(tokenList.remove(0), helpBuild(tokenList));
+
+        } else if (BinaryOperation.OPERATORS.contains(tokenList.get(0))) { //BinaryOperation
+            return new BinaryOperation(tokenList.remove(0), helpBuild(tokenList), helpBuild(tokenList));
+
+        } else if (tokenList.get(0).matches("^[a-zA-Z].*")) { //Variable
+            return new Variable(tokenList.remove(0));
+
+        } else if(tokenList.get(0).matches("^-?[0-9].*")){ //Constant
             int value = Integer.parseInt(tokenList.remove(0));
-            return child = new Constant(value);
+            return new Constant(value);
+
         } else {
             Errors.report(Errors.Type.ILLEGAL_OPERATOR, tokenList.get(0));
         }
@@ -97,14 +100,14 @@ public class Arboles {
             if (tokenList.get(0).equals(ASSIGN)) {
                 tokenList.remove(0);
                 String name = tokenList.remove(0);
-                child = getExpression(tokenList);
-                Assignment assign = new Assignment(name, child);
+                Assignment assign = new Assignment(name, helpBuild(tokenList));
                 actionList.add(assign);
+
             } else if (tokenList.get(0).equals(PRINT)) {
                 tokenList.remove(0);
-                child = getExpression(tokenList);
-                Print print = new Print(child);
+                Print print = new Print(helpBuild(tokenList));
                 actionList.add(print);
+
             } else {
                 Errors.report(Errors.Type.ILLEGAL_ACTION, tokenList.get(0));
             }

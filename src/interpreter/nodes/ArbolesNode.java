@@ -8,6 +8,7 @@ import java.io.PrintWriter;
  * the MAQ instructions that can be executed later.
  *
  * @author RIT CS
+ * @author Tiffany Lee
  */
 public interface ArbolesNode {
     /**

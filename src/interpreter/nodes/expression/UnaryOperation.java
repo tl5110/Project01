@@ -45,7 +45,7 @@ public class UnaryOperation implements ExpressionNode{
     }
 
     /**
-     * Compute the result of evaluation the expression and applying the
+     * Compute the result of evaluating the expression and applying the
      * operator to it
      *
      * @param symTbl the symbol table, if needed, to fetch the variable values.
