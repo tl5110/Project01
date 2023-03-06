@@ -52,12 +52,16 @@ public class Arboles {
      */
     public Arboles(Scanner in, boolean stdin) {
         if (stdin) System.out.print("🌳 ");
-        System.out.println("(ARB) prefix...");
-        while (in.hasNextLine()){ //&& !in.equals(EOF)
+        List<String> prefix = new ArrayList<>();
+        while (in.hasNextLine()){
             String token = in.nextLine();
-            System.out.println(token);
+            if (token.equals(EOF)) break;
+            prefix.add(token);
             tokenList.addAll(List.of(token.strip().split("\\s+")));
+            if (stdin) System.out.print("🌳 ");
         }
+        System.out.println("(ARB) prefix...");
+        prefix.forEach(System.out::println);
     }
 
     /**
